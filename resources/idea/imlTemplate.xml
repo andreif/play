@@ -39,8 +39,8 @@
                 </CLASSES>
                 <JAVADOC />
                 <SOURCES>
-								    <root url="file://%PLAYHOME%/framework/src" />
-								</SOURCES>
+                    <root url="file://%PLAYHOME%/framework/src" />
+                </SOURCES>
             </library>
         </orderEntry>
     </component>
