@@ -1,9 +1,10 @@
 import os, os.path
 import shutil
+import platform
 
 from play.utils import *
 
-COMMANDS = ['idealize', 'idea']
+COMMANDS = ['idealize', 'idea', 'ideaproj']
 
 HELP = {
     'idealize': 'Create all IntelliJ Idea configuration files'
@@ -21,6 +22,15 @@ def execute(**kargs):
 
     application_name = app.readConf('application.name')
     imlFile = os.path.join(app.path, application_name + '.iml')
+    
+    if command == 'ideaproj':
+        iprFile = os.path.join(app.path, application_name + '.ipr') # project file
+        iwsFile = os.path.join(app.path, application_name + '.iws') # workspace file
+    
+        shutil.copyfile(os.path.join(play_env["basedir"], 'resources/idea/iwsTemplate.xml'), iwsFile)
+        shutil.copyfile(os.path.join(play_env["basedir"], 'resources/idea/iprTemplate.xml'), iprFile)
+        replaceAll(iprFile, r'%MODULE_NAME%', application_name)
+    
     shutil.copyfile(os.path.join(play_env["basedir"], 'resources/idea/imlTemplate.xml'), imlFile)
     cpXML = ""
 
@@ -48,5 +58,9 @@ def execute(**kargs):
 
 
     print "~ OK, the application is ready for Intellij Idea"
-    print "~ Use File/New Module/Import Existing module"
+    if command == 'ideaproj':
+        if platform.system() == 'Darwin':
+            os.system("open -a /Applications/IntelliJ\\ IDEA*.app %s" % iprFile)
+    else:
+        print "~ Use File/New Module/Import Existing module"
     print "~"
