@@ -28,6 +28,8 @@ def execute(**kargs):
         iwsFile = os.path.join(app.path, application_name + '.iws') # workspace file
     
         shutil.copyfile(os.path.join(play_env["basedir"], 'resources/idea/iwsTemplate.xml'), iwsFile)
+        replaceAll(iwsFile, r'%APP_NAME%', application_name)
+        
         shutil.copyfile(os.path.join(play_env["basedir"], 'resources/idea/iprTemplate.xml'), iprFile)
         replaceAll(iprFile, r'%MODULE_NAME%', application_name)
     
